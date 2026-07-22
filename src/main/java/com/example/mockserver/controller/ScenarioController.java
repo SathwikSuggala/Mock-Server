@@ -16,13 +16,10 @@ public class ScenarioController {
 
     private final ScenarioService scenarioService;
     private final MockApiService apiService;
-    private final MockResponseService responseService;
 
-    public ScenarioController(ScenarioService scenarioService, MockApiService apiService,
-                               MockResponseService responseService) {
+    public ScenarioController(ScenarioService scenarioService, MockApiService apiService) {
         this.scenarioService = scenarioService;
         this.apiService = apiService;
-        this.responseService = responseService;
     }
 
     @GetMapping
