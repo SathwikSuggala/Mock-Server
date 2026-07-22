@@ -12,6 +12,71 @@ Many real third-party APIs are only accessible from production or whitelisted se
 
 ---
 
+## Changelog
+
+### v2.1 — Bug Fixes
+> **Tag:** `v2.1`
+
+- **Fix:** JSP EL conflict — the Import/Export page was crashing at startup due to JSP's Expression Language processor trying to evaluate JavaScript template literal `${...}` expressions as server-side EL. Fixed with `isELIgnored="true"`.
+- **Fix:** Dark theme table colors were reversed — Bootstrap 5's default table CSS was overriding the custom dark styles, causing table rows to appear white and turn dark on hover. Fixed by overriding Bootstrap's CSS custom properties (`--bs-table-bg`, `--bs-table-color`) and applying `!important` where needed.
+
+---
+
+### v2 — Major Feature Release
+> **Tag:** `v2`
+
+#### 🎨 UI Theme Support
+- Added `theme.jsp` — a shared stylesheet that drives a consistent dark theme across all pages.
+- Sidebar navigation now uses a gradient dark panel with active-link indicator and hover animations.
+
+#### 🔧 Bug Fix: Cascade Delete
+- **Fixed:** Deleting a saved API or response threw a `DataIntegrityViolationException` due to orphaned rows in the `scenario_mapping` table.
+- Added `@OneToMany(cascade = CascadeType.REMOVE)` on `MockResponse.scenarioMappings` and `MockApi.scenarioMappings` so JPA now deletes child `ScenarioMapping` rows before deleting the parent.
+
+#### 📤 Selective Export
+- **Export by APIs** — presents a checklist of all saved APIs. Choose specific ones; only selected APIs are written to the JSON export.
+- **Export by Scenario** — pick one scenario, then choose which of its API→response mappings to include. Exports as a dedicated `type: "scenario"` JSON with the mapped response embedded per API.
+
+#### 📥 Selective Import with Conflict Resolution
+- **2-step import flow** for all formats (Mock Server JSON, OpenAPI, Postman Collection):
+  1. **Preview** — upload the file; the server parses it and returns all detected endpoints *without saving anything*.
+  2. **Checklist** — user selects which endpoints to actually import.
+- **Conflict Detection** — if any selected endpoint's `method + path` already exists in the database, a conflict resolution row appears with two options per conflicted API:
+  - ♻️ **Reuse Existing** — skips creating a duplicate API; if the import is a scenario, attaches the response to the existing API instead.
+  - ➕ **Create New Copy** — imports a fresh copy regardless.
+- **Smart Scenario Import** — when importing a `type: "scenario"` JSON:
+  - Reuses an existing scenario by name if it already exists.
+  - For "Reuse Existing" APIs, searches for a response with the same name under the existing API's matchers before creating a duplicate response.
+
+#### 📥 Postman Collection Import — Selective
+- Postman Collections can now also be previewed before importing. All endpoints appear in a checklist; only selected ones are saved.
+
+#### 🔌 cURL Import (New)
+- Paste any `curl` command into the new **Import from cURL** card.
+- Parses: HTTP method (`-X`), URL→path, headers (`-H`), request body (`-d`/`--data`).
+- Creates a `MockApi` + default `RequestMatcher` + `200 OK` `MockResponse` instantly.
+- Errors are shown **inline** directly below the button — no modals.
+
+---
+
+### v1 — Initial Release
+> **Tag:** `v1`
+
+- Full mock API lifecycle: create, edit, clone, delete APIs.
+- Request matchers with priority, header/query/body/path-variable matching.
+- Multiple responses per matcher with Manual / Random / Sequential selection modes.
+- Dynamic variables in response bodies (`${request.body.x}`, `${uuid}`, etc.).
+- Fault simulation: Timeout, Empty Response, Connection Reset.
+- Delay support: Fixed or Random range (ms).
+- Scenario management: activate a set of responses across multiple APIs at once; cron-based auto-activation.
+- Proxy / Record mode: forward to a real service and record the response.
+- Call Logs with search, filtering, and configurable retention.
+- Import from OpenAPI (JSON/YAML) and Postman Collection v2.1.
+- Full export of all APIs and scenarios as JSON.
+- Dark-themed web UI built with Bootstrap 5 and jQuery.
+
+---
+
 ## Tech Stack
 
 | Layer      | Technology                              |
@@ -125,16 +190,37 @@ Scenarios let you activate a set of responses across multiple APIs at once.
 2. Open scenario → **Add API Mapping** (select API + Response)
 3. Click **Activate** to switch all mapped responses at once
 
-One scenario can be active at a time.
+One scenario can be active at a time. Scenarios also support cron-based auto-activation.
 
 ---
 
-## OpenAPI Import
+## Import / Export
 
-1. Go to **Import / Export**
-2. Upload a `swagger.json`, `openapi.json`, or `openapi.yaml`
-3. APIs are created automatically with default matchers and `200 OK` responses
-4. Edit each API's responses as needed
+### Export
+
+| Mode | Description |
+|------|-------------|
+| **Export by APIs** | Choose specific APIs from a checklist → downloads a `type: "apis"` JSON |
+| **Export by Scenario** | Select one scenario + its mappings → downloads a `type: "scenario"` JSON with the exact mapped response per API |
+| **Export All** | Quick download of everything |
+
+### Import
+
+All import flows use a **2-step preview** process — no data is saved until you confirm:
+
+1. Upload the file → click **Preview**
+2. Review detected endpoints in a checklist
+3. Handle any conflicts (APIs already in DB) — choose **Reuse** or **Create New**
+4. Click **Import Selected**
+
+Supported formats:
+- Mock Server JSON (`type: "apis"` or `type: "scenario"`)
+- OpenAPI / Swagger (JSON or YAML)
+- Postman Collection v2.1
+
+### cURL Import
+
+Paste any `curl` command and click **Parse & Import**. Supports `-X`, `-H`, `-d`/`--data` flags. Errors display inline.
 
 ---
 
@@ -145,13 +231,6 @@ One scenario can be active at a time.
 3. Enable Proxy Mode → Save Settings
 4. Send requests to `/mock/...` — they'll be forwarded to the real service and recorded
 5. Click the import icon on a recording to convert it to a reusable mock
-
----
-
-## Export / Import
-
-- **Export** — downloads all APIs, matchers, responses, and scenarios as JSON
-- **Import** — re-imports from a previously exported JSON file (creates new records)
 
 ---
 
@@ -192,17 +271,19 @@ src/main/java/com/example/mockserver/
 │                    MockResponseService, ScenarioService,
 │                    MockEngineService, CallLogService,
 │                    DashboardService, ImportExportService,
-│                    OpenApiImportService, ProxyService, SettingsService
+│                    OpenApiImportService, PostmanImportService,
+│                    CurlImportService, ProxyService, SettingsService
 ├── repository/      (JPA repositories for each entity)
 ├── entity/          MockApi, RequestMatcher, MockResponse,
 │                    Scenario, ScenarioMapping, CallLog,
-│                    ProxyRecording, StatefulFlow, AppSettings
+│                    ProxyRecording, AppSettings
 ├── dto/             MockApiDto, RequestMatcherDto, MockResponseDto,
 │                    ScenarioDto, ScenarioMappingDto, DashboardDto
 ├── mapper/          MockApiMapper
 └── util/            RequestMatcherUtil
 
 src/main/webapp/WEB-INF/views/
+├── theme.jsp
 ├── dashboard.jsp, api-list.jsp, api-detail.jsp
 ├── matchers.jsp, responses.jsp
 ├── scenarios.jsp, scenario-detail.jsp
