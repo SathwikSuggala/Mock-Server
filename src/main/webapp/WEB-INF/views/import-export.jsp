@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,14 +52,15 @@
   .section-tabs .nav-link.active { color: #a5b4fc; border-bottom-color: #6366f1; background: transparent; }
 
   /* Preview table */
-  .preview-table { background: #12151f; border-radius: 8px; }
-  .preview-table thead th { background: #1a1d2e; color: #8890a4; font-size:.8rem; font-weight:600; border-color:#2a2d3e; }
-  .preview-table tbody tr { border-color:#2a2d3e; }
-  .preview-table tbody td { color:#e0e0e0; font-size:.88rem; vertical-align:middle; border-color:#2a2d3e; }
-  .preview-table tbody tr:hover td { background: rgba(99,102,241,.07); }
+  .preview-table { background: #12151f; border-radius: 8px; --bs-table-bg: #12151f; --bs-table-color: #e0e0e0; --bs-table-hover-bg: rgba(99,102,241,.1); }
+  .preview-table thead th { background: #1a1d2e !important; color: #8890a4 !important; font-size:.8rem; font-weight:600; border-color:#2a2d3e !important; }
+  .preview-table tbody tr { background: #12151f !important; border-color:#2a2d3e !important; }
+  .preview-table tbody td { color:#e0e0e0 !important; font-size:.88rem; vertical-align:middle; border-color:#2a2d3e !important; background: #12151f !important; }
+  .preview-table tbody tr:hover td { background: rgba(99,102,241,.12) !important; }
+
 
   /* Conflict row */
-  .conflict-row td { background: rgba(239,68,68,.07) !important; }
+  .conflict-row td { background: rgba(239,68,68,.15) !important; }
 
   /* Step indicators */
   .step-badge { width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; }
