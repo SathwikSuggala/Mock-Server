@@ -4,6 +4,7 @@ import com.example.mockserver.entity.MockApi;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
+import java.util.Optional;
 
 public interface MockApiRepository extends JpaRepository<MockApi, Long> {
     List<MockApi> findByEnabledTrue();
@@ -11,4 +12,5 @@ public interface MockApiRepository extends JpaRepository<MockApi, Long> {
     @Query("SELECT a FROM MockApi a WHERE a.enabled = true ORDER BY a.name")
     List<MockApi> findAllEnabledOrdered();
     long countByEnabledTrue();
+    Optional<MockApi> findByHttpMethodAndEndpointPath(String httpMethod, String endpointPath);
 }

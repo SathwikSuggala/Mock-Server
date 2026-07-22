@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ScenarioRepository extends JpaRepository<Scenario, Long> {
     Optional<Scenario> findByActiveTrue();
     List<Scenario> findAllByOrderByNameAsc();
+    Optional<Scenario> findByName(String name);
 }
