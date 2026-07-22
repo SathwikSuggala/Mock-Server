@@ -46,6 +46,7 @@
   .json-invalid { border-color: #ef4444 !important; }
   .json-valid { border-color: #22c55e !important; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">

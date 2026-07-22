@@ -34,6 +34,7 @@
   .modal-footer { border-top: 1px solid #2a2d3e; }
   label { color: #8890a4; font-size: .82rem; font-weight: 500; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">

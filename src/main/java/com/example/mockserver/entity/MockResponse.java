@@ -13,6 +13,7 @@ public class MockResponse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_matcher_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private RequestMatcher requestMatcher;
 
     @Column(name = "response_name", nullable = false, length = 255)
@@ -66,6 +67,9 @@ public class MockResponse {
     @Column(name = "webhook_body", columnDefinition = "TEXT")
     private String webhookBody;
 
+    @OneToMany(mappedBy = "mockResponse", cascade = CascadeType.REMOVE)
+    private java.util.List<ScenarioMapping> scenarioMappings = new java.util.ArrayList<>();
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public RequestMatcher getRequestMatcher() { return requestMatcher; }
@@ -104,4 +108,6 @@ public class MockResponse {
     public void setWebhookDelayMs(Integer webhookDelayMs) { this.webhookDelayMs = webhookDelayMs; }
     public String getWebhookBody() { return webhookBody; }
     public void setWebhookBody(String webhookBody) { this.webhookBody = webhookBody; }
+    public java.util.List<ScenarioMapping> getScenarioMappings() { return scenarioMappings; }
+    public void setScenarioMappings(java.util.List<ScenarioMapping> scenarioMappings) { this.scenarioMappings = scenarioMappings; }
 }

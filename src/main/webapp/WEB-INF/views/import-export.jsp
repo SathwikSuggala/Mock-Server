@@ -31,6 +31,7 @@
   .btn-orange:hover { background: #ea580c; color: #fff; }
   .icon-circle { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">

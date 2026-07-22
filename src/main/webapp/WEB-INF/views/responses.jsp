@@ -44,6 +44,7 @@
   .var-hint code { color: #fb923c; cursor: pointer; }
   .var-hint code:hover { color: #fbbf24; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">

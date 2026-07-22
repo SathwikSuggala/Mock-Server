@@ -59,6 +59,7 @@
   .shortcut-badge:hover { background: rgba(99,102,241,.35); }
   canvas { max-height: 220px; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">

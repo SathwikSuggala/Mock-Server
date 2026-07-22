@@ -24,8 +24,11 @@
   
   .dark-input { background: #12151f; border: 1px solid #2a2d3e; color: #e0e0e0; border-radius: 8px; }
   .dark-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.2); color: #e0e0e0; background: #12151f; }
+  .dark-select { background: #12151f; border: 1px solid #2a2d3e; color: #e0e0e0; border-radius: 8px; }
+  .dark-select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.2); }
   label { color: #8890a4; font-size: .82rem; font-weight: 500; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">
@@ -56,8 +59,15 @@
           <input type="text" class="form-control dark-input" id="proxyTargetUrl"
             value="${settings['proxy.targetUrl']}"/>
         </div>
-        <div class="col-md-12">
-          <div class="form-check">
+        <div class="col-md-6">
+          <label>Theme Mode</label>
+          <select class="form-select dark-select" id="themeMode">
+            <option value="dark">Dark Mode</option>
+            <option value="light">Light Mode</option>
+          </select>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <div class="form-check mb-2">
             <input class="form-check-input" type="checkbox" id="proxyEnabledSetting"
               ${settings['proxy.enabled'] == 'true' ? 'checked' : ''}/>
             <label class="form-check-label text-white">Enable Proxy Mode</label>
@@ -77,7 +87,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+$(document).ready(function() {
+  var activeTheme = localStorage.getItem('theme') || 'dark';
+  document.getElementById('themeMode').value = activeTheme;
+});
+
 function saveSettings() {
+  var selectedTheme = document.getElementById('themeMode').value;
+  localStorage.setItem('theme', selectedTheme);
+  document.documentElement.setAttribute('data-theme', selectedTheme);
+
   var data = {
     'log.retention.days': document.getElementById('logRetention').value,
     'proxy.targetUrl': document.getElementById('proxyTargetUrl').value,

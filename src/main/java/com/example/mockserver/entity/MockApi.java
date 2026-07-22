@@ -46,6 +46,9 @@ public class MockApi {
     @JoinColumn(name = "default_response_id")
     private MockResponse defaultResponse;
 
+    @OneToMany(mappedBy = "mockApi", cascade = CascadeType.REMOVE)
+    private List<ScenarioMapping> scenarioMappings = new ArrayList<>();
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
@@ -68,6 +71,8 @@ public class MockApi {
     public void setMatchers(List<RequestMatcher> matchers) { this.matchers = matchers; }
     public MockResponse getDefaultResponse() { return defaultResponse; }
     public void setDefaultResponse(MockResponse defaultResponse) { this.defaultResponse = defaultResponse; }
+    public List<ScenarioMapping> getScenarioMappings() { return scenarioMappings; }
+    public void setScenarioMappings(List<ScenarioMapping> scenarioMappings) { this.scenarioMappings = scenarioMappings; }
 
     @PreUpdate
     public void preUpdate() { this.updatedAt = LocalDateTime.now(); }

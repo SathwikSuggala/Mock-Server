@@ -14,6 +14,7 @@
 .sidebar .brand{color:#fff;font-size:1.1rem;padding:1rem;border-bottom:1px solid #343a40}
 .main-content{margin-left:220px;padding:1.5rem}
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body class="bg-light">
 <div class="sidebar d-flex flex-column">

@@ -10,6 +10,7 @@ public class ScenarioMapping {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scenario_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Scenario scenario;
 
     @ManyToOne(fetch = FetchType.LAZY)

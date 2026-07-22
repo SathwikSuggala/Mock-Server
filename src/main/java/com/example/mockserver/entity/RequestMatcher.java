@@ -15,6 +15,7 @@ public class RequestMatcher {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mock_api_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private MockApi mockApi;
 
     @Column(name = "matcher_name", nullable = false, length = 255)

@@ -39,6 +39,7 @@
   .page-footer { background: #1a1d2e; border: 1px solid #2a2d3e; border-radius: 0 0 12px 12px;
                  padding: .7rem 1.2rem; display: flex; justify-content: space-between; align-items: center; }
 </style>
+<%@ include file="theme.jsp" %>
 </head>
 <body>
 <div class="sidebar d-flex flex-column">
