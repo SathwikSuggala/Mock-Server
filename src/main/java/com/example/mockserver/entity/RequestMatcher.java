@@ -27,7 +27,7 @@ public class RequestMatcher {
     @Column(name = "matcher_priority")
     private int priority = 0;
 
-    @Column(name = "is_enabled", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
+    @Column(name = "is_enabled", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
     private boolean enabled = true;
 
     @Column(name = "match_headers", columnDefinition = "TEXT")

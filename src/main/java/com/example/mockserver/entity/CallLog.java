@@ -28,10 +28,10 @@ public class CallLog {
     @Column(name = "query_params", columnDefinition = "TEXT")
     private String queryParams;
 
-    @Column(name = "request_body", columnDefinition = "MEDIUMTEXT")
+    @Column(name = "request_body", columnDefinition = "TEXT")
     private String requestBody;
 
-    @Column(name = "response_body", columnDefinition = "MEDIUMTEXT")
+    @Column(name = "response_body", columnDefinition = "TEXT")
     private String responseBody;
 
     @Column(name = "status_code")

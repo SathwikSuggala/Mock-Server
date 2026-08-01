@@ -19,7 +19,7 @@ public class Scenario {
     @Column(name = "scenario_description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    @Column(name = "is_active", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private boolean active = false;
 
     @Column(name = "cron_expression", length = 100)

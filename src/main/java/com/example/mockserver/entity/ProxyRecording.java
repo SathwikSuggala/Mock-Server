@@ -29,7 +29,7 @@ public class ProxyRecording {
     @Column(name = "query_params", columnDefinition = "TEXT")
     private String queryParams;
 
-    @Column(name = "request_body", columnDefinition = "MEDIUMTEXT")
+    @Column(name = "request_body", columnDefinition = "TEXT")
     private String requestBody;
 
     @Column(name = "response_status")
@@ -38,13 +38,13 @@ public class ProxyRecording {
     @Column(name = "response_headers", columnDefinition = "TEXT")
     private String responseHeaders;
 
-    @Column(name = "response_body", columnDefinition = "MEDIUMTEXT")
+    @Column(name = "response_body", columnDefinition = "TEXT")
     private String responseBody;
 
     @Column(name = "content_type", length = 200)
     private String contentType;
 
-    @Column(name = "is_imported", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    @Column(name = "is_imported", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private boolean imported = false;
 
     public Long getId() { return id; }

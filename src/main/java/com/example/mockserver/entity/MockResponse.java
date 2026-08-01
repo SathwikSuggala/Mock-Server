@@ -22,10 +22,10 @@ public class MockResponse {
     @Column(name = "response_description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "is_enabled", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
+    @Column(name = "is_enabled", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
     private boolean enabled = true;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    @Column(name = "is_active", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private boolean active = false;
 
     @Column(name = "http_status")
@@ -37,7 +37,7 @@ public class MockResponse {
     @Column(name = "response_cookies", columnDefinition = "TEXT")
     private String responseCookies;
 
-    @Column(name = "response_body", columnDefinition = "MEDIUMTEXT")
+    @Column(name = "response_body", columnDefinition = "TEXT")
     private String responseBody;
 
     @Column(name = "content_type", length = 200)
