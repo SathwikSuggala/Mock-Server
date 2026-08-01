@@ -75,6 +75,7 @@ public class RequestMatcherService {
         copy.setMatchQueryParams(original.getMatchQueryParams());
         copy.setMatchBody(original.getMatchBody());
         copy.setMatchBodyType(original.getMatchBodyType());
+        copy.setMatchBodyFormat(original.getMatchBodyFormat());
         copy.setMatchPathVariables(original.getMatchPathVariables());
         copy.setResponseSelectionMode(original.getResponseSelectionMode());
         copy.setRateLimitRpm(original.getRateLimitRpm());
@@ -97,6 +98,7 @@ public class RequestMatcherService {
         m.setMatchQueryParams(dto.getMatchQueryParams());
         m.setMatchBody(dto.getMatchBody());
         m.setMatchBodyType(dto.getMatchBodyType());
+        m.setMatchBodyFormat(dto.getMatchBodyFormat());
         m.setMatchPathVariables(dto.getMatchPathVariables());
         m.setResponseSelectionMode(dto.getResponseSelectionMode());
         m.setRateLimitRpm(dto.getRateLimitRpm());

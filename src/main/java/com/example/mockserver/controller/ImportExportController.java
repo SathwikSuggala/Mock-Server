@@ -1,6 +1,5 @@
 package com.example.mockserver.controller;
 
-import com.example.mockserver.entity.MockApi;
 import com.example.mockserver.entity.ScenarioMapping;
 import com.example.mockserver.repository.MockApiRepository;
 import com.example.mockserver.repository.ScenarioMappingRepository;
@@ -9,7 +8,6 @@ import com.example.mockserver.service.ImportExportService;
 import com.example.mockserver.service.OpenApiImportService;
 import com.example.mockserver.service.PostmanImportService;
 import com.example.mockserver.service.CurlImportService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,15 +33,14 @@ public class ImportExportController {
     private final MockApiRepository apiRepo;
     private final ScenarioRepository scenarioRepo;
     private final ScenarioMappingRepository mappingRepo;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public ImportExportController(ImportExportService importExportService,
-                                  OpenApiImportService openApiImportService,
-                                  PostmanImportService postmanImportService,
-                                  CurlImportService curlImportService,
-                                  MockApiRepository apiRepo,
-                                  ScenarioRepository scenarioRepo,
-                                  ScenarioMappingRepository mappingRepo) {
+            OpenApiImportService openApiImportService,
+            PostmanImportService postmanImportService,
+            CurlImportService curlImportService,
+            MockApiRepository apiRepo,
+            ScenarioRepository scenarioRepo,
+            ScenarioMappingRepository mappingRepo) {
         this.importExportService = importExportService;
         this.openApiImportService = openApiImportService;
         this.postmanImportService = postmanImportService;
@@ -139,7 +136,10 @@ public class ImportExportController {
         return downloadResponse(json, "mock-apis");
     }
 
-    /** Export one scenario with selected mappings. Body: {"scenarioId": 1, "mappingIds": [1,2]} */
+    /**
+     * Export one scenario with selected mappings. Body: {"scenarioId": 1,
+     * "mappingIds": [1,2]}
+     */
     @PostMapping("/export-scenario")
     @ResponseBody
     public ResponseEntity<byte[]> exportScenario(@RequestBody Map<String, Object> body) throws Exception {
@@ -162,7 +162,7 @@ public class ImportExportController {
     @PostMapping("/preview")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> preview(@RequestParam("file") MultipartFile file,
-                                                       @RequestParam("type") String type) {
+            @RequestParam("type") String type) {
         try {
             String content = new String(file.getBytes(), StandardCharsets.UTF_8);
             String filename = file.getOriginalFilename() != null ? file.getOriginalFilename().toLowerCase() : "";
@@ -201,7 +201,8 @@ public class ImportExportController {
 
     /**
      * Final import with user's selections and conflict resolutions.
-     * Body: {type, fileContent, selectedKeys:[], resolutions:{"GET:/users":"REUSE"|"CREATE_NEW"}}
+     * Body: {type, fileContent, selectedKeys:[],
+     * resolutions:{"GET:/users":"REUSE"|"CREATE_NEW"}}
      */
     @PostMapping("/import-selective")
     @ResponseBody
@@ -212,7 +213,8 @@ public class ImportExportController {
             @SuppressWarnings("unchecked")
             List<String> selectedKeys = (List<String>) body.getOrDefault("selectedKeys", Collections.emptyList());
             @SuppressWarnings("unchecked")
-            Map<String, String> resolutions = (Map<String, String>) body.getOrDefault("resolutions", Collections.emptyMap());
+            Map<String, String> resolutions = (Map<String, String>) body.getOrDefault("resolutions",
+                    Collections.emptyMap());
 
             int count;
             String filename = (String) body.getOrDefault("filename", "");
@@ -296,8 +298,7 @@ public class ImportExportController {
                     "id", dto.getId(),
                     "name", dto.getName(),
                     "httpMethod", dto.getHttpMethod(),
-                    "endpointPath", dto.getEndpointPath()
-            ));
+                    "endpointPath", dto.getEndpointPath()));
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, Object> result = new LinkedHashMap<>();

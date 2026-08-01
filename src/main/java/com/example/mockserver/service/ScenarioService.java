@@ -2,7 +2,6 @@ package com.example.mockserver.service;
 
 import com.example.mockserver.dto.*;
 import com.example.mockserver.entity.*;
-import com.example.mockserver.mapper.MockApiMapper;
 import com.example.mockserver.repository.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,16 +20,13 @@ public class ScenarioService {
     private final ScenarioMappingRepository mappingRepo;
     private final MockApiRepository apiRepo;
     private final MockResponseRepository responseRepo;
-    private final MockApiMapper mapper;
 
     public ScenarioService(ScenarioRepository scenarioRepo, ScenarioMappingRepository mappingRepo,
-                           MockApiRepository apiRepo, MockResponseRepository responseRepo,
-                           MockApiMapper mapper) {
+            MockApiRepository apiRepo, MockResponseRepository responseRepo) {
         this.scenarioRepo = scenarioRepo;
         this.mappingRepo = mappingRepo;
         this.apiRepo = apiRepo;
         this.responseRepo = responseRepo;
-        this.mapper = mapper;
     }
 
     @Transactional(readOnly = true)
@@ -68,7 +64,10 @@ public class ScenarioService {
 
     public void activate(Long id) {
         // Deactivate all
-        scenarioRepo.findAll().forEach(s -> { s.setActive(false); scenarioRepo.save(s); });
+        scenarioRepo.findAll().forEach(s -> {
+            s.setActive(false);
+            scenarioRepo.save(s);
+        });
         // Activate target
         Scenario target = scenarioRepo.findById(id).orElseThrow();
         target.setActive(true);
@@ -79,7 +78,10 @@ public class ScenarioService {
             MockResponse resp = mapping.getMockResponse();
             if (resp != null && resp.getRequestMatcher() != null) {
                 responseRepo.findByRequestMatcherId(resp.getRequestMatcher().getId())
-                        .forEach(r -> { r.setActive(false); responseRepo.save(r); });
+                        .forEach(r -> {
+                            r.setActive(false);
+                            responseRepo.save(r);
+                        });
                 resp.setActive(true);
                 responseRepo.save(resp);
             }
@@ -87,10 +89,16 @@ public class ScenarioService {
     }
 
     public void deactivate() {
-        scenarioRepo.findAll().forEach(s -> { s.setActive(false); scenarioRepo.save(s); });
+        scenarioRepo.findAll().forEach(s -> {
+            s.setActive(false);
+            scenarioRepo.save(s);
+        });
     }
 
-    /** Auto-activate scenarios by cron or deactivate when activeUntil has passed. Runs every minute. */
+    /**
+     * Auto-activate scenarios by cron or deactivate when activeUntil has passed.
+     * Runs every minute.
+     */
     @Scheduled(fixedRate = 60_000)
     public void checkScheduledScenarios() {
         LocalDateTime now = LocalDateTime.now();

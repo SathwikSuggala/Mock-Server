@@ -2,7 +2,6 @@ package com.example.mockserver.service;
 
 import com.example.mockserver.entity.*;
 import com.example.mockserver.repository.*;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -21,19 +20,16 @@ public class ImportExportService {
     private final ScenarioRepository scenarioRepo;
     private final ScenarioMappingRepository mappingRepo;
     private final MockResponseRepository responseRepo;
-    private final RequestMatcherRepository matcherRepo;
     private final ObjectMapper objectMapper;
 
     public ImportExportService(MockApiRepository apiRepo,
-                               ScenarioRepository scenarioRepo,
-                               ScenarioMappingRepository mappingRepo,
-                               MockResponseRepository responseRepo,
-                               RequestMatcherRepository matcherRepo) {
+            ScenarioRepository scenarioRepo,
+            ScenarioMappingRepository mappingRepo,
+            MockResponseRepository responseRepo) {
         this.apiRepo = apiRepo;
         this.scenarioRepo = scenarioRepo;
         this.mappingRepo = mappingRepo;
         this.responseRepo = responseRepo;
-        this.matcherRepo = matcherRepo;
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
         this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -74,7 +70,8 @@ public class ImportExportService {
 
         List<Map<String, Object>> mappingExports = new ArrayList<>();
         for (ScenarioMapping sm : allMappings) {
-            if (allowed != null && !allowed.contains(sm.getId())) continue;
+            if (allowed != null && !allowed.contains(sm.getId()))
+                continue;
             Map<String, Object> entry = new LinkedHashMap<>();
             entry.put("api", sm.getMockApi());
             entry.put("response", sm.getMockResponse());
@@ -155,7 +152,8 @@ public class ImportExportService {
         for (Map<String, String> item : previewItems) {
             String key = item.get("key");
             String[] parts = key.split(":", 2);
-            if (parts.length < 2) continue;
+            if (parts.length < 2)
+                continue;
             apiRepo.findByHttpMethodAndEndpointPath(parts[0], parts[1]).ifPresent(existing -> {
                 Map<String, Object> conflict = new LinkedHashMap<>();
                 conflict.put("key", key);
@@ -188,7 +186,8 @@ public class ImportExportService {
     public int importApis(String json, List<String> selectedKeys, Map<String, String> resolutions) throws Exception {
         JsonNode root = objectMapper.readTree(json);
         JsonNode apis = root.path("apis");
-        if (!apis.isArray()) return 0;
+        if (!apis.isArray())
+            return 0;
 
         Set<String> allowed = selectedKeys != null && !selectedKeys.isEmpty() ? new HashSet<>(selectedKeys) : null;
         int count = 0;
@@ -197,7 +196,8 @@ public class ImportExportService {
             String method = apiNode.path("httpMethod").asText("GET");
             String path = apiNode.path("endpointPath").asText("/");
             String key = method + ":" + path;
-            if (allowed != null && !allowed.contains(key)) continue;
+            if (allowed != null && !allowed.contains(key))
+                continue;
 
             String resolution = resolutions.getOrDefault(key, "CREATE_NEW");
             if ("REUSE".equals(resolution)) {
@@ -219,11 +219,13 @@ public class ImportExportService {
      * selectedKeys: which method:path mappings to include (null = all).
      * resolutions: method:path → "REUSE" | "CREATE_NEW"
      */
-    public int importScenario(String json, List<String> selectedKeys, Map<String, String> resolutions) throws Exception {
+    public int importScenario(String json, List<String> selectedKeys, Map<String, String> resolutions)
+            throws Exception {
         JsonNode root = objectMapper.readTree(json);
         JsonNode scenarioNode = root.path("scenario");
         JsonNode mappingsNode = root.path("mappings");
-        if (!mappingsNode.isArray()) return 0;
+        if (!mappingsNode.isArray())
+            return 0;
 
         Set<String> allowed = selectedKeys != null && !selectedKeys.isEmpty() ? new HashSet<>(selectedKeys) : null;
 
@@ -234,7 +236,8 @@ public class ImportExportService {
             s.setName(scenarioName);
             s.setDescription(scenarioNode.path("description").asText(""));
             String cron = scenarioNode.path("cronExpression").asText(null);
-            if (cron != null && !cron.isBlank()) s.setCronExpression(cron);
+            if (cron != null && !cron.isBlank())
+                s.setCronExpression(cron);
             return scenarioRepo.save(s);
         });
 
@@ -246,7 +249,8 @@ public class ImportExportService {
             String method = apiNode.path("httpMethod").asText("GET");
             String path = apiNode.path("endpointPath").asText("/");
             String key = method + ":" + path;
-            if (allowed != null && !allowed.contains(key)) continue;
+            if (allowed != null && !allowed.contains(key))
+                continue;
 
             String resolution = resolutions.getOrDefault(key, "CREATE_NEW");
 
@@ -340,9 +344,11 @@ public class ImportExportService {
             for (RequestMatcher m : api.getMatchers()) {
                 m.setId(null);
                 m.setMockApi(api);
-                if (m.getResponses() != null) m.getResponses().forEach(r -> r.setId(null));
+                if (m.getResponses() != null)
+                    m.getResponses().forEach(r -> r.setId(null));
             }
         }
-        if (api.getDefaultResponse() != null) api.getDefaultResponse().setId(null);
+        if (api.getDefaultResponse() != null)
+            api.getDefaultResponse().setId(null);
     }
 }

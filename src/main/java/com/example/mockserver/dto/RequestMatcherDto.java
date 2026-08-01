@@ -13,6 +13,7 @@ public class RequestMatcherDto {
     private String matchQueryParams;
     private String matchBody;
     private String matchBodyType;
+    private String matchBodyFormat;
     private String matchPathVariables;
     private String responseSelectionMode;
     private int sequentialIndex;
@@ -39,6 +40,8 @@ public class RequestMatcherDto {
     public void setMatchBody(String matchBody) { this.matchBody = matchBody; }
     public String getMatchBodyType() { return matchBodyType; }
     public void setMatchBodyType(String matchBodyType) { this.matchBodyType = matchBodyType; }
+    public String getMatchBodyFormat() { return matchBodyFormat; }
+    public void setMatchBodyFormat(String matchBodyFormat) { this.matchBodyFormat = matchBodyFormat; }
     public String getMatchPathVariables() { return matchPathVariables; }
     public void setMatchPathVariables(String matchPathVariables) { this.matchPathVariables = matchPathVariables; }
     public String getResponseSelectionMode() { return responseSelectionMode; }

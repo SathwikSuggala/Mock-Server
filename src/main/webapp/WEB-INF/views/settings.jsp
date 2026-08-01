@@ -73,6 +73,13 @@
             <label class="form-check-label text-white">Enable Proxy Mode</label>
           </div>
         </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="loggingEnabledSetting"
+              ${settings['system.logging.enabled'] == 'true' ? 'checked' : ''}/>
+            <label class="form-check-label text-white">Enable System Logging</label>
+          </div>
+        </div>
         <div class="col-12 mt-4 pt-3 border-top" style="border-color:#2a2d3e !important;">
           <button class="btn btn-primary" onclick="saveSettings()">
             <i class="bi bi-save me-1"></i>Save Settings
@@ -100,7 +107,8 @@ function saveSettings() {
   var data = {
     'log.retention.days': document.getElementById('logRetention').value,
     'proxy.targetUrl': document.getElementById('proxyTargetUrl').value,
-    'proxy.enabled': document.getElementById('proxyEnabledSetting').checked ? 'true' : 'false'
+    'proxy.enabled': document.getElementById('proxyEnabledSetting').checked ? 'true' : 'false',
+    'system.logging.enabled': document.getElementById('loggingEnabledSetting').checked ? 'true' : 'false'
   };
   $.ajax({url: '/settings/api/save', method: 'POST', contentType: 'application/json',
     data: JSON.stringify(data),

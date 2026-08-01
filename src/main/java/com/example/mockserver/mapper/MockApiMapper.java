@@ -44,6 +44,7 @@ public class MockApiMapper {
         dto.setMatchQueryParams(m.getMatchQueryParams());
         dto.setMatchBody(m.getMatchBody());
         dto.setMatchBodyType(m.getMatchBodyType());
+        dto.setMatchBodyFormat(m.getMatchBodyFormat());
         dto.setMatchPathVariables(m.getMatchPathVariables());
         dto.setResponseSelectionMode(m.getResponseSelectionMode());
         dto.setSequentialIndex(m.getSequentialIndex());

@@ -279,6 +279,7 @@
               <option value="REGEX">Regex</option>
               <option value="JSONPATH">JSONPath</option>
               <option value="GRAPHQL_OPERATION">GraphQL Operation</option>
+              <option value="JSON_MATCH">JSON Match</option>
             </select>
             <div id="bodyTypeHint" class="text-muted mt-1" style="font-size:.72rem;"></div>
           </div>
@@ -320,7 +321,8 @@ var bodyTypeHints = {
   'EXACT': 'Body must match exactly.',
   'REGEX': 'Body must match this Java regex.',
   'JSONPATH': 'Use format: $.field=value (e.g. $.action=login)',
-  'GRAPHQL_OPERATION': 'Enter the GraphQL operationName to match.'
+  'GRAPHQL_OPERATION': 'Enter the GraphQL operationName to match.',
+  'JSON_MATCH': 'Matches JSON structurally. Use "*" for any value.'
 };
 document.getElementById('matcherBodyType').addEventListener('change', function() {
   document.getElementById('bodyTypeHint').textContent = bodyTypeHints[this.value] || '';
@@ -419,6 +421,7 @@ function openMatcherModal() {
   document.getElementById('matcherPathVars').value = '';
   document.getElementById('matcherBody').value = '';
   document.getElementById('matcherBodyType').value = 'CONTAINS';
+  document.getElementById('matcherBodyFormat').value = 'text';
   document.getElementById('matcherRateLimit').value = '0';
   document.getElementById('bodyFormatStatus').textContent = '';
   document.getElementById('bodyTypeHint').textContent = '';
@@ -439,6 +442,8 @@ function editMatcher(id) {
     document.getElementById('matcherPathVars').value = m.matchPathVariables || '';
     document.getElementById('matcherBody').value = m.matchBody || '';
     document.getElementById('matcherBodyType').value = m.matchBodyType || 'CONTAINS';
+    document.getElementById('matcherBodyFormat').value = m.matchBodyFormat || 'text';
+    onBodyFormatChange();
     document.getElementById('matcherRateLimit').value = m.rateLimitRpm || 0;
     document.getElementById('bodyTypeHint').textContent = bodyTypeHints[m.matchBodyType] || '';
     document.getElementById('matcherModalTitle').textContent = 'Edit Matcher';
@@ -465,6 +470,7 @@ function saveMatcher() {
     matchPathVariables: document.getElementById('matcherPathVars').value || null,
     matchBody: document.getElementById('matcherBody').value || null,
     matchBodyType: document.getElementById('matcherBodyType').value,
+    matchBodyFormat: document.getElementById('matcherBodyFormat').value,
     rateLimitRpm: parseInt(document.getElementById('matcherRateLimit').value) || 0
   };
   var url = id ? '/matchers/' + id : '/matchers/api';

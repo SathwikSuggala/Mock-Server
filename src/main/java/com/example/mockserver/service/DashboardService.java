@@ -2,7 +2,6 @@ package com.example.mockserver.service;
 
 import com.example.mockserver.dto.DashboardDto;
 import com.example.mockserver.repository.*;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +19,8 @@ public class DashboardService {
     private final CallLogService logService;
 
     public DashboardService(MockApiRepository apiRepo, RequestMatcherRepository matcherRepo,
-                            MockResponseRepository responseRepo, ScenarioRepository scenarioRepo,
-                            CallLogService logService) {
+            MockResponseRepository responseRepo, ScenarioRepository scenarioRepo,
+            CallLogService logService) {
         this.apiRepo = apiRepo;
         this.matcherRepo = matcherRepo;
         this.responseRepo = responseRepo;
@@ -40,7 +39,7 @@ public class DashboardService {
 
         List<String[]> topApis = new ArrayList<>();
         for (Object[] row : logService.topCalledApis(5)) {
-            topApis.add(new String[]{String.valueOf(row[0]), String.valueOf(row[1])});
+            topApis.add(new String[] { String.valueOf(row[0]), String.valueOf(row[1]) });
         }
         dto.setTopCalledApis(topApis);
         return dto;

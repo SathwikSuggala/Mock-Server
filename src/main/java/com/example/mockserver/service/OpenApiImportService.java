@@ -1,6 +1,5 @@
 package com.example.mockserver.service;
 
-import com.example.mockserver.dto.*;
 import com.example.mockserver.entity.*;
 import com.example.mockserver.repository.*;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,18 +33,22 @@ public class OpenApiImportService {
         return importSelected(content, yaml, null);
     }
 
-    /** Preview: parse without saving. Returns list of {key, method, path, name} maps. */
+    /**
+     * Preview: parse without saving. Returns list of {key, method, path, name}
+     * maps.
+     */
     public List<Map<String, String>> previewFromContent(String content, boolean yaml) throws Exception {
         ObjectMapper mapper = yaml ? new ObjectMapper(new YAMLFactory()) : new ObjectMapper();
         JsonNode root = mapper.readTree(content);
         List<Map<String, String>> items = new ArrayList<>();
         JsonNode paths = root.path("paths");
-        if (paths.isMissingNode()) return items;
+        if (paths.isMissingNode())
+            return items;
         paths.fields().forEachRemaining(pathEntry -> {
             String path = pathEntry.getKey();
             pathEntry.getValue().fields().forEachRemaining(methodEntry -> {
                 String method = methodEntry.getKey().toUpperCase();
-                if (Set.of("GET","POST","PUT","DELETE","PATCH","HEAD","OPTIONS").contains(method)) {
+                if (Set.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS").contains(method)) {
                     JsonNode op = methodEntry.getValue();
                     Map<String, String> item = new LinkedHashMap<>();
                     item.put("key", method + ":" + path);
@@ -59,13 +62,17 @@ public class OpenApiImportService {
         return items;
     }
 
-    /** Import only the endpoints whose key (METHOD:path) appears in selectedKeys (null = all). */
+    /**
+     * Import only the endpoints whose key (METHOD:path) appears in selectedKeys
+     * (null = all).
+     */
     public List<MockApi> importSelected(String content, boolean yaml, List<String> selectedKeys) throws Exception {
         ObjectMapper mapper = yaml ? new ObjectMapper(new YAMLFactory()) : new ObjectMapper();
         JsonNode root = mapper.readTree(content);
         List<MockApi> created = new ArrayList<>();
         JsonNode paths = root.path("paths");
-        if (paths.isMissingNode()) return created;
+        if (paths.isMissingNode())
+            return created;
 
         Set<String> allowed = selectedKeys != null ? new HashSet<>(selectedKeys) : null;
 
@@ -73,9 +80,11 @@ public class OpenApiImportService {
             String path = pathEntry.getKey();
             pathEntry.getValue().fields().forEachRemaining(methodEntry -> {
                 String method = methodEntry.getKey().toUpperCase();
-                if (!Set.of("GET","POST","PUT","DELETE","PATCH","HEAD","OPTIONS").contains(method)) return;
+                if (!Set.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS").contains(method))
+                    return;
                 String key = method + ":" + path;
-                if (allowed != null && !allowed.contains(key)) return;
+                if (allowed != null && !allowed.contains(key))
+                    return;
 
                 JsonNode op = methodEntry.getValue();
                 MockApi api = new MockApi();

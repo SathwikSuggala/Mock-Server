@@ -89,8 +89,49 @@ public class RequestMatcherUtil {
             case "REGEX"              -> actualBody.matches(criteria);
             case "JSONPATH"           -> matchesJsonPath(criteria, actualBody);
             case "GRAPHQL_OPERATION"  -> matchesGraphqlOperation(criteria, actualBody);
+            case "JSON_MATCH"         -> matchesJson(criteria, actualBody);
             default                   -> actualBody.contains(criteria); // CONTAINS
         };
+    }
+
+    private static boolean matchesJson(String criteria, String body) {
+        try {
+            JsonNode expected = objectMapper.readTree(criteria);
+            JsonNode actual = objectMapper.readTree(body);
+            return jsonNodesMatch(expected, actual);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static boolean jsonNodesMatch(JsonNode expected, JsonNode actual) {
+        if (expected.isTextual() && ("*".equals(expected.asText()) || "__EXISTS__".equals(expected.asText()))) {
+            return actual != null && !actual.isMissingNode();
+        }
+        if (actual == null || actual.isMissingNode()) {
+            return false;
+        }
+        if (expected.isObject()) {
+            if (!actual.isObject()) return false;
+            Iterator<Map.Entry<String, JsonNode>> fields = expected.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> field = fields.next();
+                if (!jsonNodesMatch(field.getValue(), actual.get(field.getKey()))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (expected.isArray()) {
+            if (!actual.isArray() || expected.size() != actual.size()) return false;
+            for (int i = 0; i < expected.size(); i++) {
+                if (!jsonNodesMatch(expected.get(i), actual.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return expected.equals(actual);
     }
 
     private static boolean matchesJsonPath(String criteria, String body) {
@@ -268,12 +309,12 @@ public class RequestMatcherUtil {
     }
 
     public static Map<String, String> headersToMap(HttpServletRequest request) {
-        Map<String, String> map = new LinkedHashMap<>();
+        Map<String, String> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         Enumeration<String> names = request.getHeaderNames();
         if (names != null) {
             while (names.hasMoreElements()) {
                 String name = names.nextElement();
-                map.put(name.toLowerCase(), request.getHeader(name));
+                map.put(name, request.getHeader(name));
             }
         }
         return map;

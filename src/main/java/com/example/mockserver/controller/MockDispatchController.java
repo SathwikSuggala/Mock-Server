@@ -8,16 +8,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
 /**
- * Catch-all controller that handles all mock API requests under /mock/** prefix.
+ * Catch-all controller that handles all mock API requests under /mock/**
+ * prefix.
  */
 @RestController
 @RequestMapping("/mock")
@@ -31,8 +30,8 @@ public class MockDispatchController {
     private final ObjectMapper objectMapper;
 
     public MockDispatchController(MockEngineService engine, CallLogService logService,
-                                  SettingsService settingsService, ProxyService proxyService,
-                                  WebhookService webhookService) {
+            SettingsService settingsService, ProxyService proxyService,
+            WebhookService webhookService) {
         this.engine = engine;
         this.logService = logService;
         this.settingsService = settingsService;
@@ -41,23 +40,24 @@ public class MockDispatchController {
         this.objectMapper = new ObjectMapper();
     }
 
-    @RequestMapping(value = "/**", method = {RequestMethod.GET, RequestMethod.POST,
+    @RequestMapping(value = "/**", method = { RequestMethod.GET, RequestMethod.POST,
             RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH,
-            RequestMethod.HEAD, RequestMethod.OPTIONS})
+            RequestMethod.HEAD, RequestMethod.OPTIONS })
     public void handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
         long start = System.currentTimeMillis();
 
         // Strip /mock prefix from path for matching
         String fullPath = request.getRequestURI();
         String mockPath = fullPath.startsWith("/mock") ? fullPath.substring(5) : fullPath;
-        if (mockPath.isEmpty()) mockPath = "/";
+        if (mockPath.isEmpty())
+            mockPath = "/";
 
         String requestBody = RequestMatcherUtil.readBody(request);
         HttpServletRequest wrappedRequest = new UriOverrideRequest(request, mockPath);
 
         // Check proxy mode
         String proxyEnabled = settingsService.get("proxy.enabled", "false");
-        String proxyTarget  = settingsService.get("proxy.targetUrl", "");
+        String proxyTarget = settingsService.get("proxy.targetUrl", "");
 
         if ("true".equals(proxyEnabled) && !proxyTarget.isBlank()) {
             handleProxy(request, wrappedRequest, response, requestBody, proxyTarget, mockPath, start);
@@ -96,9 +96,19 @@ public class MockDispatchController {
         // Handle fault simulation
         if (mockResponse.getFaultType() != null) {
             switch (mockResponse.getFaultType()) {
-                case "TIMEOUT"          -> { Thread.sleep(60000); return; }
-                case "EMPTY_RESPONSE"   -> { response.setStatus(mockResponse.getHttpStatus()); return; }
-                case "CONNECTION_RESET" -> { response.setStatus(500); response.getWriter().write(""); return; }
+                case "TIMEOUT" -> {
+                    Thread.sleep(60000);
+                    return;
+                }
+                case "EMPTY_RESPONSE" -> {
+                    response.setStatus(mockResponse.getHttpStatus());
+                    return;
+                }
+                case "CONNECTION_RESET" -> {
+                    response.setStatus(500);
+                    response.getWriter().write("");
+                    return;
+                }
             }
         }
 
@@ -117,18 +127,22 @@ public class MockDispatchController {
         if (mockResponse.getResponseHeaders() != null && !mockResponse.getResponseHeaders().isBlank()) {
             try {
                 Map<String, String> headers = objectMapper.readValue(
-                        mockResponse.getResponseHeaders(), new TypeReference<>() {});
+                        mockResponse.getResponseHeaders(), new TypeReference<>() {
+                        });
                 headers.forEach(response::setHeader);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         // Set cookies
         if (mockResponse.getResponseCookies() != null && !mockResponse.getResponseCookies().isBlank()) {
             try {
                 Map<String, String> cookies = objectMapper.readValue(
-                        mockResponse.getResponseCookies(), new TypeReference<>() {});
+                        mockResponse.getResponseCookies(), new TypeReference<>() {
+                        });
                 cookies.forEach((k, v) -> response.addCookie(new Cookie(k, v)));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         // Resolve and write body
@@ -154,13 +168,15 @@ public class MockDispatchController {
     }
 
     private void handleProxy(HttpServletRequest originalRequest, HttpServletRequest wrappedRequest,
-                              HttpServletResponse response, String requestBody,
-                              String proxyTarget, String mockPath, long start) throws Exception {
+            HttpServletResponse response, String requestBody,
+            String proxyTarget, String mockPath, long start) throws Exception {
         try {
             ProxyRecording recording = proxyService.forwardAndRecord(wrappedRequest, requestBody, proxyTarget);
             response.setStatus(recording.getResponseStatus());
-            if (recording.getContentType() != null) response.setContentType(recording.getContentType());
-            if (recording.getResponseBody() != null) response.getWriter().write(recording.getResponseBody());
+            if (recording.getContentType() != null)
+                response.setContentType(recording.getContentType());
+            if (recording.getResponseBody() != null)
+                response.getWriter().write(recording.getResponseBody());
         } catch (Exception e) {
             response.setStatus(502);
             response.getWriter().write("{\"error\":\"Proxy error: " + e.getMessage() + "\"}");
@@ -168,7 +184,8 @@ public class MockDispatchController {
     }
 
     private void applyDelay(MockResponse r) throws InterruptedException {
-        if (r.getDelayMs() <= 0) return;
+        if (r.getDelayMs() <= 0)
+            return;
         int delay = r.getDelayMs();
         if ("RANDOM".equals(r.getDelayType()) && r.getDelayMaxMs() > r.getDelayMs()) {
             delay = r.getDelayMs() + new Random().nextInt(r.getDelayMaxMs() - r.getDelayMs());
@@ -177,15 +194,16 @@ public class MockDispatchController {
     }
 
     private void logRequest(HttpServletRequest request, String path, String reqBody,
-                             int status, String respBody, String matcherName,
-                             String scenarioName, long execTime) {
+            int status, String respBody, String matcherName,
+            String scenarioName, long execTime) {
         try {
             CallLog log = new CallLog();
             log.setHttpMethod(request.getMethod());
             log.setRequestPath(path);
             log.setRequestBody(reqBody);
             log.setResponseBody(respBody != null && respBody.length() > 5000
-                    ? respBody.substring(0, 5000) + "..." : respBody);
+                    ? respBody.substring(0, 5000) + "..."
+                    : respBody);
             log.setStatusCode(status);
             log.setMatcherName(matcherName);
             log.setScenarioName(scenarioName);
@@ -198,16 +216,22 @@ public class MockDispatchController {
             log.setQueryParams(qs);
 
             logService.save(log);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     // Simple wrapper to override getRequestURI
     private static class UriOverrideRequest extends jakarta.servlet.http.HttpServletRequestWrapper {
         private final String uri;
+
         public UriOverrideRequest(HttpServletRequest request, String uri) {
             super(request);
             this.uri = uri;
         }
-        @Override public String getRequestURI() { return uri; }
+
+        @Override
+        public String getRequestURI() {
+            return uri;
+        }
     }
 }

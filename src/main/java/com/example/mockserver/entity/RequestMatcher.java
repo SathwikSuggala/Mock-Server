@@ -42,6 +42,9 @@ public class RequestMatcher {
     @Column(name = "match_body_type", length = 30)
     private String matchBodyType = "CONTAINS";
 
+    @Column(name = "match_body_format", length = 20)
+    private String matchBodyFormat = "text";
+
     @Column(name = "match_path_variables", columnDefinition = "TEXT")
     private String matchPathVariables;
 
@@ -78,6 +81,8 @@ public class RequestMatcher {
     public void setMatchBody(String matchBody) { this.matchBody = matchBody; }
     public String getMatchBodyType() { return matchBodyType; }
     public void setMatchBodyType(String matchBodyType) { this.matchBodyType = matchBodyType; }
+    public String getMatchBodyFormat() { return matchBodyFormat; }
+    public void setMatchBodyFormat(String matchBodyFormat) { this.matchBodyFormat = matchBodyFormat; }
     public String getMatchPathVariables() { return matchPathVariables; }
     public void setMatchPathVariables(String matchPathVariables) { this.matchPathVariables = matchPathVariables; }
     public String getResponseSelectionMode() { return responseSelectionMode; }

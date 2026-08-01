@@ -32,8 +32,7 @@ public class CurlImportService {
 
         // Normalize multiline curl (backslash-newline continuation)
         String cmd = curlCommand.trim()
-                .replaceAll("\\\\\\r?\\n\\s*", " ")
-                .replaceAll("\\s+", " ");
+                .replaceAll("\\\\\\r?\\n\\s*", " ");
 
         // Must start with 'curl'
         if (!cmd.toLowerCase().startsWith("curl")) {
@@ -88,6 +87,20 @@ public class CurlImportService {
             matcher.setMatchHeaders(sb.toString());
         }
 
+        if (body != null && !body.isBlank()) {
+            matcher.setMatchBody(body);
+            if (contentType.toLowerCase().contains("json")) {
+                matcher.setMatchBodyType("JSON_MATCH");
+                matcher.setMatchBodyFormat("json");
+            } else if (contentType.toLowerCase().contains("xml")) {
+                matcher.setMatchBodyType("EXACT");
+                matcher.setMatchBodyFormat("xml");
+            } else {
+                matcher.setMatchBodyType("EXACT");
+                matcher.setMatchBodyFormat("text");
+            }
+        }
+
         MockResponse response = new MockResponse();
         response.setName("200 OK");
         response.setHttpStatus(200);
@@ -124,15 +137,14 @@ public class CurlImportService {
     }
 
     private boolean hasBody(String cmd) {
-        return cmd.contains(" -d ") || cmd.contains(" --data ") || cmd.contains(" --data-raw ")
-                || cmd.contains(" --data-binary ") || cmd.contains(" --json ");
+        return Pattern.compile("\\s(?:-d|--data(?:-raw|-binary)?|--json)\\s").matcher(cmd).find();
     }
 
     private Map<String, String> extractHeaders(String cmd) {
         Map<String, String> headers = new LinkedHashMap<>();
-        Matcher m = Pattern.compile("(?:-H|--header)\\s+['\"]([^'\"]+)['\"]").matcher(cmd);
+        Matcher m = Pattern.compile("(?:-H|--header)\\s+(?:'([^']+)'|\"([^\"]+)\")").matcher(cmd);
         while (m.find()) {
-            String h = m.group(1);
+            String h = m.group(1) != null ? m.group(1) : m.group(2);
             int colon = h.indexOf(':');
             if (colon > 0) {
                 headers.put(h.substring(0, colon).trim(), h.substring(colon + 1).trim());
@@ -143,11 +155,11 @@ public class CurlImportService {
 
     private String extractBody(String cmd) {
         // --json 'body' (curl >= 7.82)
-        Matcher m = Pattern.compile("--json\\s+['\"]([^'\"]+)['\"]").matcher(cmd);
-        if (m.find()) return m.group(1);
+        Matcher m = Pattern.compile("--json\\s+(?:'([^']+)'|\"([^\"]+)\")").matcher(cmd);
+        if (m.find()) return m.group(1) != null ? m.group(1) : m.group(2);
         // -d / --data / --data-raw / --data-binary
-        m = Pattern.compile("(?:-d|--data(?:-raw|-binary)?)\\s+['\"]([^'\"]+)['\"]").matcher(cmd);
-        if (m.find()) return m.group(1);
+        m = Pattern.compile("(?:-d|--data(?:-raw|-binary)?)\\s+(?:'([^']+)'|\"([^\"]+)\")").matcher(cmd);
+        if (m.find()) return m.group(1) != null ? m.group(1) : m.group(2);
         // unquoted -d value
         m = Pattern.compile("(?:-d|--data)\\s+(\\S+)").matcher(cmd);
         if (m.find()) return m.group(1);

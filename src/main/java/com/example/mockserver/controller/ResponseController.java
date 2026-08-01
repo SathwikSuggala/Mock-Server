@@ -15,14 +15,11 @@ public class ResponseController {
 
     private final MockResponseService responseService;
     private final RequestMatcherService matcherService;
-    private final MockApiService apiService;
 
     public ResponseController(MockResponseService responseService,
-                               RequestMatcherService matcherService,
-                               MockApiService apiService) {
+            RequestMatcherService matcherService) {
         this.responseService = responseService;
         this.matcherService = matcherService;
-        this.apiService = apiService;
     }
 
     @GetMapping("/matcher/{matcherId}")

@@ -3,7 +3,6 @@ package com.example.mockserver.service;
 import com.example.mockserver.entity.ProxyRecording;
 import com.example.mockserver.entity.*;
 import com.example.mockserver.repository.*;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.hc.client5.http.classic.methods.*;
@@ -37,7 +36,7 @@ public class ProxyService {
     }
 
     public ProxyRecording forwardAndRecord(HttpServletRequest request, String requestBody,
-                                            String targetBaseUrl) throws Exception {
+            String targetBaseUrl) throws Exception {
         String path = request.getRequestURI();
         String queryString = request.getQueryString();
         String targetUrl = targetBaseUrl + path + (queryString != null ? "?" + queryString : "");
@@ -82,8 +81,10 @@ public class ProxyService {
                 try {
                     recording.setResponseHeaders(objectMapper.writeValueAsString(respHeaders));
                     HttpEntity entity = response.getEntity();
-                    if (entity != null) recording.setResponseBody(EntityUtils.toString(entity));
-                } catch (Exception e) { /* ignore */ }
+                    if (entity != null)
+                        recording.setResponseBody(EntityUtils.toString(entity));
+                } catch (Exception e) {
+                    /* ignore */ }
                 return null;
             });
         }
