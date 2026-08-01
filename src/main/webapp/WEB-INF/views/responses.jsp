@@ -16,7 +16,7 @@
   body { background: #0f1117; color: #e0e0e0; }
   .sidebar { width: 230px; min-height: 100vh; background: linear-gradient(180deg, #1a1d2e 0%, #12151f 100%);
              position: fixed; top: 0; left: 0; z-index: 100; border-right: 1px solid #2a2d3e; }
-  .sidebar .nav-link { color: #8890a4; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
+  .sidebar .nav-link { color: #94a3b8; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
   .sidebar .nav-link:hover { color: #fff; background: rgba(99,102,241,.15); }
   .sidebar .nav-link.active { color: #fff; background: rgba(99,102,241,.25); border-left: 3px solid #6366f1; }
   .sidebar .brand { color: #fff; font-size: 1.1rem; padding: 1.2rem; border-bottom: 1px solid #2a2d3e; font-weight: 600; }
@@ -33,14 +33,14 @@
   .modal-content { background: #1a1d2e; border: 1px solid #2a2d3e; }
   .modal-header { border-bottom: 1px solid #2a2d3e; }
   .modal-footer { border-top: 1px solid #2a2d3e; }
-  label { color: #8890a4; font-size: .82rem; font-weight: 500; }
+  label { color: #94a3b8; font-size: .82rem; font-weight: 500; }
   .CodeMirror { background: #12151f; color: #e0e0e0; border: 1px solid #2a2d3e; border-radius: 8px; font-size: .85rem; }
   .format-bar { display: flex; align-items: center; gap: .5rem; margin-bottom: 4px; }
   .format-select { background: #1e2235; border: 1px solid #2a2d3e; color: #a5b4fc; border-radius: 6px; font-size: .78rem; padding: 2px 8px; }
   .section-header { background: #252840; border-radius: 8px; padding: .5rem .8rem; margin-bottom: .5rem;
                     font-size: .8rem; color: #a5b4fc; font-weight: 600; cursor: pointer; user-select: none; }
   .section-header i { transition: transform .2s; }
-  .var-hint { background: #1e2235; border: 1px solid #2a2d3e; border-radius: 8px; padding: .6rem .8rem; font-size: .75rem; color: #8890a4; }
+  .var-hint { background: #1e2235; border: 1px solid #2a2d3e; border-radius: 8px; padding: .6rem .8rem; font-size: .75rem; color: #94a3b8; }
   .var-hint code { color: #fb923c; cursor: pointer; }
   .var-hint code:hover { color: #fbbf24; }
 </style>
@@ -250,7 +250,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <pre id="previewBody" style="background:#12151f;color:#a5b4fc;border-radius:8px;padding:1rem;max-height:500px;overflow:auto;font-size:.85rem;"></pre>
+        <pre id="previewBody" class="code-block" style="border-radius:8px;padding:1rem;max-height:500px;overflow:auto;font-size:.85rem;"></pre>
       </div>
     </div>
   </div>

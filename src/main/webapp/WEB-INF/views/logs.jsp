@@ -14,7 +14,7 @@
   body { background: #0f1117; color: #e0e0e0; }
   .sidebar { width: 230px; min-height: 100vh; background: linear-gradient(180deg, #1a1d2e 0%, #12151f 100%);
              position: fixed; top: 0; left: 0; z-index: 100; border-right: 1px solid #2a2d3e; }
-  .sidebar .nav-link { color: #8890a4; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
+  .sidebar .nav-link { color: #94a3b8; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
   .sidebar .nav-link:hover { color: #fff; background: rgba(99,102,241,.15); }
   .sidebar .nav-link.active { color: #fff; background: rgba(99,102,241,.25); border-left: 3px solid #6366f1; }
   .sidebar .brand { color: #fff; font-size: 1.1rem; padding: 1.2rem; border-bottom: 1px solid #2a2d3e; font-weight: 600; }
@@ -26,7 +26,7 @@
   .dark-select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.2); }
   .log-table { background: #1a1d2e; border: 1px solid #2a2d3e; border-radius: 12px; overflow: hidden; }
   .log-table table { margin: 0; }
-  .log-table thead th { background: #252840; border-bottom: 1px solid #2a2d3e; color: #8890a4;
+  .log-table thead th { background: #252840; border-bottom: 1px solid #2a2d3e; color: #94a3b8;
                         font-size: .78rem; text-transform: uppercase; letter-spacing: .8px; }
   .log-table tbody tr { border-bottom: 1px solid #1e2235; color: #c0c0c0; transition: background .15s; cursor: pointer; }
   .log-table tbody tr:hover { background: rgba(99,102,241,.1); }
@@ -95,7 +95,7 @@
   <!-- Table -->
   <div class="log-table">
     <div style="overflow-x:auto;">
-      <table class="table table-sm table-dark table-hover mb-0">
+      <table class="table table-sm table-hover dark-table mb-0">
         <thead>
           <tr>
             <th>Time</th><th>Method</th><th>Path</th><th>Status</th>
