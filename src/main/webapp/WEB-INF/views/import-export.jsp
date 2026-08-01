@@ -16,7 +16,7 @@
   /* Sidebar */
   .sidebar { width: 230px; min-height: 100vh; background: linear-gradient(180deg, #1a1d2e 0%, #12151f 100%);
              position: fixed; top: 0; left: 0; z-index: 100; border-right: 1px solid #2a2d3e; }
-  .sidebar .nav-link { color: #8890a4; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
+  .sidebar .nav-link { color: #94a3b8; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
   .sidebar .nav-link:hover { color: #fff; background: rgba(99,102,241,.15); }
   .sidebar .nav-link.active { color: #fff; background: rgba(99,102,241,.25); border-left: 3px solid #6366f1; }
   .sidebar .brand { color: #fff; font-size: 1.1rem; padding: 1.2rem; border-bottom: 1px solid #2a2d3e; font-weight: 600; }
@@ -48,12 +48,12 @@
   .method-badge { display:inline-block; padding:2px 7px; border-radius:4px; font-size:.72rem; font-weight:600; font-family:monospace; min-width:58px; text-align:center; }
 
   /* Section tabs */
-  .section-tabs .nav-link { color: #8890a4; border: none; border-bottom: 2px solid transparent; border-radius: 0; padding: .6rem 1.2rem; }
+  .section-tabs .nav-link { color: #94a3b8; border: none; border-bottom: 2px solid transparent; border-radius: 0; padding: .6rem 1.2rem; }
   .section-tabs .nav-link.active { color: #a5b4fc; border-bottom-color: #6366f1; background: transparent; }
 
   /* Preview table */
   .preview-table { background: #12151f; border-radius: 8px; --bs-table-bg: #12151f; --bs-table-color: #e0e0e0; --bs-table-hover-bg: rgba(99,102,241,.1); }
-  .preview-table thead th { background: #1a1d2e !important; color: #8890a4 !important; font-size:.8rem; font-weight:600; border-color:#2a2d3e !important; }
+  .preview-table thead th { background: #1a1d2e !important; color: #94a3b8 !important; font-size:.8rem; font-weight:600; border-color:#2a2d3e !important; }
   .preview-table tbody tr { background: #12151f !important; border-color:#2a2d3e !important; }
   .preview-table tbody td { color:#e0e0e0 !important; font-size:.88rem; vertical-align:middle; border-color:#2a2d3e !important; background: #12151f !important; }
   .preview-table tbody tr:hover td { background: rgba(99,102,241,.12) !important; }
@@ -66,7 +66,7 @@
   .step-badge { width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; }
   .step-badge.done { background:#10b981; color:#fff; }
   .step-badge.active { background:#6366f1; color:#fff; }
-  .step-badge.idle { background:#2a2d3e; color:#8890a4; }
+  .step-badge.idle { background:#2a2d3e; color:#94a3b8; }
 
   /* Inline result */
   .curl-result { border-radius:8px; padding:.75rem 1rem; font-size:.88rem; margin-top:.6rem; }

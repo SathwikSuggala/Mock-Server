@@ -14,7 +14,7 @@
   body { background: #0f1117; color: #e0e0e0; }
   .sidebar { width: 230px; min-height: 100vh; background: linear-gradient(180deg, #1a1d2e 0%, #12151f 100%);
              position: fixed; top: 0; left: 0; z-index: 100; border-right: 1px solid #2a2d3e; }
-  .sidebar .nav-link { color: #8890a4; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
+  .sidebar .nav-link { color: #94a3b8; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px; transition: all .2s; font-size: .9rem; }
   .sidebar .nav-link:hover { color: #fff; background: rgba(99,102,241,.15); }
   .sidebar .nav-link.active { color: #fff; background: rgba(99,102,241,.25); border-left: 3px solid #6366f1; }
   .sidebar .brand { color: #fff; font-size: 1.1rem; padding: 1.2rem; border-bottom: 1px solid #2a2d3e; font-weight: 600; }
@@ -22,7 +22,7 @@
   .dark-card { background: #1a1d2e; border: 1px solid #2a2d3e; border-radius: 14px; overflow: hidden; }
   .dark-card .card-header { background: transparent; border-bottom: 1px solid #2a2d3e; font-weight: 600; color: #fff; padding: 1rem 1.2rem; }
   .dark-table { background: transparent; color: #c0c0c0; margin: 0; }
-  .dark-table thead th { background: #252840; border-bottom: 1px solid #2a2d3e; color: #8890a4; font-size: .78rem; text-transform: uppercase; letter-spacing: .8px; padding: 1rem 1.2rem; }
+  .dark-table thead th { background: #252840; border-bottom: 1px solid #2a2d3e; color: #94a3b8; font-size: .78rem; text-transform: uppercase; letter-spacing: .8px; padding: 1rem 1.2rem; }
   .dark-table tbody tr { border-bottom: 1px solid #1e2235; transition: background .15s; }
   .dark-table tbody tr:hover { background: rgba(99,102,241,.08); }
   .dark-table td { padding: 1rem 1.2rem; vertical-align: middle; }
@@ -31,7 +31,7 @@
   .modal-content { background: #1a1d2e; border: 1px solid #2a2d3e; }
   .modal-header { border-bottom: 1px solid #2a2d3e; }
   .modal-footer { border-top: 1px solid #2a2d3e; }
-  label { color: #8890a4; font-size: .82rem; font-weight: 500; }
+  label { color: #94a3b8; font-size: .82rem; font-weight: 500; }
 </style>
 <%@ include file="theme.jsp" %>
 </head>
@@ -65,7 +65,7 @@
   <div class="dark-card shadow-sm">
     <div class="card-header"><i class="bi bi-diagram-2 me-2"></i>API &rarr; Response Mappings</div>
     <div style="overflow-x:auto;">
-      <table class="table table-dark table-hover dark-table">
+      <table class="table table-hover dark-table">
         <thead>
           <tr>
             <th>Target API</th>

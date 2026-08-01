@@ -15,7 +15,7 @@
   body { background: #0f1117; color: #e0e0e0; }
   .sidebar { width: 230px; min-height: 100vh; background: linear-gradient(180deg, #1a1d2e 0%, #12151f 100%);
              position: fixed; top: 0; left: 0; z-index: 100; border-right: 1px solid #2a2d3e; }
-  .sidebar .nav-link { color: #8890a4; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px;
+  .sidebar .nav-link { color: #94a3b8; padding: .65rem 1.2rem; border-radius: 8px; margin: 2px 8px;
                        transition: all .2s ease; font-size: .9rem; }
   .sidebar .nav-link:hover { color: #fff; background: rgba(99,102,241,.15); }
   .sidebar .nav-link.active { color: #fff; background: rgba(99,102,241,.25); border-left: 3px solid #6366f1; }
@@ -29,7 +29,7 @@
                background: linear-gradient(135deg, #1e2235, #252840); transition: transform .2s, box-shadow .2s; }
   .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
   .stat-card .stat-number { font-size: 2.2rem; font-weight: 700; }
-  .stat-card .stat-label { font-size: .78rem; color: #8890a4; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-card .stat-label { font-size: .78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
   .stat-card.primary .stat-number { color: #6366f1; }
   .stat-card.success .stat-number { color: #22c55e; }
   .stat-card.info .stat-number { color: #38bdf8; }
@@ -42,14 +42,14 @@
                    color: #e0e0e0; padding: .6rem 1rem .6rem 2.8rem; width: 320px; }
   .global-search:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.2); }
   .search-wrapper { position: relative; }
-  .search-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #8890a4; }
+  .search-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: #94a3b8; }
 
   /* Charts & tables */
   .dark-card { background: #1a1d2e; border: 1px solid #2a2d3e; border-radius: 14px; }
   .dark-card .card-header { background: transparent; border-bottom: 1px solid #2a2d3e;
                              font-weight: 600; color: #fff; padding: 1rem 1.2rem; }
   .dark-table { background: transparent; color: #c0c0c0; }
-  .dark-table thead th { border-bottom: 1px solid #2a2d3e; color: #8890a4; font-size: .8rem;
+  .dark-table thead th { border-bottom: 1px solid #2a2d3e; color: #94a3b8; font-size: .8rem;
                          text-transform: uppercase; letter-spacing: .8px; }
   .dark-table tbody tr { border-bottom: 1px solid #1e2235; }
   .dark-table tbody tr:hover { background: rgba(99,102,241,.08); cursor: pointer; }
@@ -210,8 +210,8 @@ function loadChart() {
         responsive: true,
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { color: '#2a2d3e' }, ticks: { color: '#8890a4', maxRotation: 0 } },
-          y: { grid: { color: '#2a2d3e' }, ticks: { color: '#8890a4' }, beginAtZero: true }
+          x: { grid: { color: '#2a2d3e' }, ticks: { color: '#94a3b8', maxRotation: 0 } },
+          y: { grid: { color: '#2a2d3e' }, ticks: { color: '#94a3b8' }, beginAtZero: true }
         }
       }
     });
